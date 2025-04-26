@@ -117,17 +117,18 @@
       </template>
     </el-dialog>
 
-    <!--  查看合作商详情对话框-->
-    <el-dialog title="合作商详情" v-model="partnerInfoOpen" width="500px" append-to-body>
-      <el-row>
-        <el-col :span="12">合作商名称:{{ form.partnerName }}</el-col>
-        <el-col :span="12">联系人:{{ form.contactPerson }}</el-col>       
-      </el-row>
-      <el-row>
-        <el-col :span="12">联系人电话:{{ form.contactPhone }}</el-col>
-        <el-col :span="12">分成比例:{{ form.profitRatio }}%</el-col>       
-      </el-row>
-    </el-dialog>
+<!-- 查看合作商详情对话框 -->
+<el-dialog title="合作商详情" v-model="partnerInfoOpen" width="500px" append-to-body>
+  <el-descriptions :column="2" border>
+    <el-descriptions-item label="合作商名称">{{ form.partnerName }}</el-descriptions-item>
+    <el-descriptions-item label="联系人">{{ form.contactPerson }}</el-descriptions-item>
+    <el-descriptions-item label="联系人电话">{{ form.contactPhone }}</el-descriptions-item>
+    <el-descriptions-item label="分成比例">{{ form.profitRatio }}%</el-descriptions-item>
+  </el-descriptions>
+  <template #footer>
+    <el-button @click="partnerInfoOpen = false">关闭</el-button>
+  </template>
+</el-dialog>
 
   </div>
 </template>
