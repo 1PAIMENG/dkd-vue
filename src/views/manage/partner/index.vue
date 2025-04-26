@@ -61,6 +61,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" type="index" width="50" align="center" prop="id" />
       <el-table-column label="合作商名称" align="center" prop="partnerName" />
+      <el-table-column label="点位数" align="center" prop="nodeCount" />
       <el-table-column label="账号" align="center" prop="account" />
       <el-table-column label="分成比例" align="center" prop="profitRatio" >
         <template #default="scope"> {{ scope.row.profitRatio }} %  </template>
