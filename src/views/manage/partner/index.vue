@@ -102,7 +102,7 @@
           <el-input v-model="form.account" placeholder="请输入账号" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" placeholder="请输入密码" />
+          <el-input v-model="form.password" type="password" placeholder="请输入密码" />
         </el-form-item>
       </el-form>
       <template #footer>
