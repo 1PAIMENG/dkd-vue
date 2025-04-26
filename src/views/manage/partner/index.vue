@@ -85,7 +85,7 @@
 
     <!-- 添加或修改合作商管理对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-      <el-form ref="partnerRef" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="partnerRef" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="合作商名称" prop="partnerName">
           <el-input v-model="form.partnerName" placeholder="请输入合作商名称" />
         </el-form-item>
@@ -95,13 +95,16 @@
         <el-form-item label="联系电话" prop="contactPhone">
           <el-input v-model="form.contactPhone" placeholder="请输入联系电话" />
         </el-form-item>
+        <el-form-item label="创建时间" prop="createTime" v-if="form.id!=null">
+          {{ form.createTime }}
+        </el-form-item>
         <el-form-item label="分成比例" prop="profitRatio">
           <el-input v-model="form.profitRatio" placeholder="请输入分成比例" />
         </el-form-item>
-        <el-form-item label="账号" prop="account">
+        <el-form-item label="账号" prop="account" v-if="form.id==null">
           <el-input v-model="form.account" placeholder="请输入账号" />
         </el-form-item>
-        <el-form-item label="密码" prop="password">
+        <el-form-item label="密码" prop="password" v-if="form.id==null">
           <el-input v-model="form.password" type="password" placeholder="请输入密码" />
         </el-form-item>
       </el-form>
