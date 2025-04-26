@@ -59,7 +59,7 @@
 
     <el-table v-loading="loading" :data="partnerList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" type="index" witdh="50" align="center" prop="id" />
+      <el-table-column label="序号" type="index" width="50" align="center" prop="id" />
       <el-table-column label="合作商名称" align="center" prop="partnerName" />
       <el-table-column label="账号" align="center" prop="account" />
       <el-table-column label="分成比例" align="center" prop="profitRatio" >
@@ -69,6 +69,7 @@
       <el-table-column label="联系电话" align="center" prop="contactPhone" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
+          <el-button link type="primary"  @click="getPartnerInfo(scope.row)" v-hasPermi="['manage:partner:query']">查看详情</el-button>
           <el-button link type="primary"  @click="handleUpdate(scope.row)" v-hasPermi="['manage:partner:edit']">修改</el-button>
           <el-button link type="primary"  @click="handleDelete(scope.row)" v-hasPermi="['manage:partner:remove']">删除</el-button>
         </template>
@@ -115,6 +116,19 @@
         </div>
       </template>
     </el-dialog>
+
+    <!--  查看合作商详情对话框-->
+    <el-dialog title="合作商详情" v-model="partnerInfoOpen" width="500px" append-to-body>
+      <el-row>
+        <el-col :span="12">合作商名称:{{ form.partnerName }}</el-col>
+        <el-col :span="12">联系人:{{ form.contactPerson }}</el-col>       
+      </el-row>
+      <el-row>
+        <el-col :span="12">联系人电话:{{ form.contactPhone }}</el-col>
+        <el-col :span="12">分成比例:{{ form.profitRatio }}%</el-col>       
+      </el-row>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -233,6 +247,18 @@ function handleUpdate(row) {
     form.value = response.data;
     open.value = true;
     title.value = "修改合作商管理";
+  });
+}
+
+/** 查看合作商详情 */
+const partnerInfoOpen=ref(false)
+function getPartnerInfo(row) {
+  reset();
+  const _id = row.id || ids.value
+  getPartner(_id).then(response => {
+    form.value = response.data;
+    partnerInfoOpen.value=true;
+
   });
 }
 
