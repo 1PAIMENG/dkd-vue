@@ -9,7 +9,7 @@
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="所属区域Id" prop="regionId">
+      <!-- <el-form-item label="所属区域Id" prop="regionId">
         <el-input
           v-model="queryParams.regionId"
           placeholder="请输入所属区域Id"
@@ -42,7 +42,7 @@
             :value="dict.value"
           />
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
         <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -93,14 +93,15 @@
 
     <el-table v-loading="loading" :data="empList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主键" align="center" prop="id" />
+      <el-table-column label="序号" type="index" width="50" align="center" prop="id" />
       <el-table-column label="人员名称" align="center" prop="userName" />
-      <el-table-column label="角色id" align="center" prop="roleId" />
-      <el-table-column label="角色编号" align="center" prop="roleCode" />
+      <el-table-column label="归属区域" align="center" prop="regionName" />
+      <el-table-column label="角色名称" align="center" prop="roleName" />
+      <el-table-column label="联系电话" align="center" prop="mobile" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['manage:emp:edit']">修改</el-button>
-          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['manage:emp:remove']">删除</el-button>
+          <el-button link type="primary"  @click="handleUpdate(scope.row)" v-hasPermi="['manage:emp:edit']">修改</el-button>
+          <el-button link type="primary"  @click="handleDelete(scope.row)" v-hasPermi="['manage:emp:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -119,14 +120,33 @@
         <el-form-item label="人员名称" prop="userName">
           <el-input v-model="form.userName" placeholder="请输入人员名称" />
         </el-form-item>
-        <el-form-item label="所属区域Id" prop="regionId">
-          <el-input v-model="form.regionId" placeholder="请输入所属区域Id" />
-        </el-form-item>
-        <el-form-item label="角色id" prop="roleId">
-          <el-input v-model="form.roleId" placeholder="请输入角色id" />
+        <el-form-item label="角色" prop="roleId">
+          <!-- <el-input v-model="form.roleId" placeholder="请输入角色id" /> -->
+           <el-select v-model="form.roleId" placeholder="请选择角色" clearable>
+            <el-option
+              v-for="item in roleList"
+              :key="item.roleId"
+              :label="item.roleName"
+              :value="item.roleId"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="联系电话" prop="mobile">
           <el-input v-model="form.mobile" placeholder="请输入联系电话" />
+        </el-form-item>
+        <el-form-item label="创建时间" prop="mobile" v-if="form.id!=null">" >
+          {{ form.createTime }}
+        </el-form-item>
+        <el-form-item label="负责区域" prop="regionId">
+          <!-- <el-input v-model="form.regionId" placeholder="请输入所属区域Id" /> -->
+           <el-select v-model="form.regionName" placeholder="请选择负责区域" clearable>
+            <el-option
+              v-for="item in regionList"
+              :key="item.regionId"
+              :label="item.regionName"
+              :value="item.regionId"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="员工头像" prop="image">
           <image-upload v-model="form.image"/>
@@ -153,6 +173,10 @@
 
 <script setup name="Emp">
 import { listEmp, getEmp, delEmp, addEmp, updateEmp } from "@/api/manage/emp";
+import { listRole} from "@/api/manage/role";
+import { loadAllParams } from "@/api/page";
+import { listRegion } from "@/api/manage/region";
+import { get } from "@vueuse/core";
 
 const { proxy } = getCurrentInstance();
 const { emp_status } = proxy.useDict('emp_status');
@@ -313,5 +337,23 @@ function handleExport() {
   }, `emp_${new Date().getTime()}.xlsx`)
 }
 
+const roleList = ref([]);
+/** 查询角色列表 */
+function getRoleList() {
+  listRole(loadAllParams).then(response => {
+    roleList.value = response.rows;
+  });
+}
+
+const regionList = ref([]);
+/** 查询区域列表*/
+function getRegionList() {
+  listRegion(loadAllParams).then(response => {
+    regionList.value = response.rows;
+  });
+}
+
+getRegionList();
+getRoleList();
 getList();
 </script>
