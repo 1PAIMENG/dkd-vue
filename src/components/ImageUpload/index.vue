@@ -16,6 +16,7 @@
       :file-list="fileList"
       :on-preview="handlePictureCardPreview"
       :class="{ hide: fileList.length >= limit }"
+
     >
       <el-icon class="avatar-uploader-icon"><plus /></el-icon>
     </el-upload>
