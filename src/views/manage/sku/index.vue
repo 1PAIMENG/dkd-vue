@@ -2,12 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="商品名称" prop="skuName">
-        <el-input
-          v-model="queryParams.skuName"
-          placeholder="请输入商品名称"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+        <el-input v-model="queryParams.skuName" placeholder="请输入商品名称" clearable @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -17,42 +12,23 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="Plus"
-          @click="handleAdd"
-          v-hasPermi="['manage:sku:add']"
-        >新增</el-button>
+        <el-button type="primary" plain icon="Plus" @click="handleAdd" v-hasPermi="['manage:sku:add']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="Edit"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['manage:sku:edit']"
-        >修改</el-button>
+        <el-button type="success" plain icon="Edit" :disabled="single" @click="handleUpdate"
+          v-hasPermi="['manage:sku:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="Delete"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['manage:sku:remove']"
-        >删除</el-button>
+        <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete"
+          v-hasPermi="['manage:sku:remove']">删除</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="Download"
-          @click="handleExport"
-          v-hasPermi="['manage:sku:export']"
-        >导出</el-button>
+        <el-button type="warning" plain icon="Download" @click="handleExport"
+          v-hasPermi="['manage:sku:export']">导出</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button type="warning" plain icon="Upload" @click="handleImport"
+          v-hasPermi="['manage:sku:add']">导入</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -63,24 +39,24 @@
       <el-table-column label="商品名称" align="center" prop="skuName" />
       <el-table-column label="商品图片" align="center" prop="skuImage" width="100">
         <template #default="scope">
-          <image-preview :src="scope.row.skuImage" :width="50" :height="50"/>
+          <image-preview :src="scope.row.skuImage" :width="50" :height="50" />
         </template>
       </el-table-column>
       <el-table-column label="品牌" align="center" prop="brandName" />
       <el-table-column label="规格" align="center" prop="unit" />
-      <el-table-column label="商品价格" align="center" prop="price" >
+      <el-table-column label="商品价格" align="center" prop="price">
         <template #default="scope">
           <!-- tag 标签高亮显示-->
           <el-tag>{{ scope.row.price/100 }}元</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="商品类型" align="center"  prop="classId" >
+      <el-table-column label="商品类型" align="center" prop="classId">
         <template #default="scope">
-         <div v-for="item in skuClassList" :key="item.classId">
-          <span  v-if="item.classId == scope.row.classId">
-            {{ item.className }}
-          </span >
-         </div>
+          <div v-for="item in skuClassList" :key="item.classId">
+            <span v-if="item.classId == scope.row.classId">
+              {{ item.className }}
+            </span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
@@ -90,19 +66,16 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary"  @click="handleUpdate(scope.row)" v-hasPermi="['manage:sku:edit']">修改</el-button>
-          <el-button link type="primary"  @click="handleDelete(scope.row)" v-hasPermi="['manage:sku:remove']">删除</el-button>
+          <el-button link type="primary" @click="handleUpdate(scope.row)"
+            v-hasPermi="['manage:sku:edit']">修改</el-button>
+          <el-button link type="primary" @click="handleDelete(scope.row)"
+            v-hasPermi="['manage:sku:remove']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    
-    <pagination
-      v-show="total>0"
-      :total="total"
-      v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize"
-      @pagination="getList"
-    />
+
+    <pagination v-show="total>0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize"
+      @pagination="getList" />
 
     <!-- 添加或修改商品管理对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
@@ -114,23 +87,19 @@
           <el-input v-model="form.brandName" placeholder="请输入品牌" />
         </el-form-item>
         <el-form-item label="商品价格" prop="price">
-          <el-input-number :min="0.01" :max="999.99" :precision="2" :step="0.5" v-model="form.price" placeholder="请输入商品价格" />元
+          <el-input-number :min="0.01" :max="999.99" :precision="2" :step="0.5" v-model="form.price"
+            placeholder="请输入商品价格" />元
         </el-form-item>
         <el-form-item label="商品类型" prop="classId">
-          <el-select v-model="form.classId" placeholder="请选择商品类型"> 
-            <el-option
-              v-for="item in skuClassList"
-              :key="item.classId"
-              :label="item.className"
-              :value="item.classId"
-            />
+          <el-select v-model="form.classId" placeholder="请选择商品类型">
+            <el-option v-for="item in skuClassList" :key="item.classId" :label="item.className" :value="item.classId" />
           </el-select>
         </el-form-item>
         <el-form-item label="规格" prop="unit">
           <el-input v-model="form.unit" placeholder="请输入规格" />
         </el-form-item>
         <el-form-item label="商品图片" prop="skuImage">
-          <image-upload v-model="form.skuImage"/>
+          <image-upload v-model="form.skuImage" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -140,6 +109,32 @@
         </div>
       </template>
     </el-dialog>
+    <!--导入按钮对话框-->
+    <el-dialog title="数据导入" v-model="excelOpen" width="300px" append-to-body>
+      <el-upload 
+        ref="uploadRef" 
+        class="upload-demo"
+        :action="uploadExcelUrl" 
+        :headers="headers"
+        :on-success="handleUploadSuccess"
+        :on-error="handleUploadError"
+        :before-upload="handleBeforeUpload"
+        :limit="1"
+        :auto-upload="false">
+        <template #trigger>
+          <el-button type="primary">上传文件</el-button>
+        </template>
+        <el-button class="ml-3" type="success" @click="submitUpload">
+          上传
+        </el-button>
+        <template #tip>
+          <div class="el-upload__tip">
+            上传文件仅支持 .xls/.xlsx 格式，文件大小不得超过 1M。
+          </div>
+        </template>
+      </el-upload>
+
+    </el-dialog>
   </div>
 </template>
 
@@ -147,6 +142,7 @@
 import { listSku, getSku, delSku, addSku, updateSku } from "@/api/manage/sku";
 import { listSkuClass } from "@/api/manage/skuClass";
 import {loadAllParams} from "@/api/page";
+import { getToken } from "@/utils/auth";
 
 const { proxy } = getCurrentInstance();
 
@@ -301,6 +297,86 @@ function handleExport() {
   proxy.download('manage/sku/export', {
     ...queryParams.value
   }, `sku_${new Date().getTime()}.xlsx`)
+}
+
+const excelOpen  = ref(false);
+/**导入按钮操作*/
+function handleImport() {
+  excelOpen.value = true;
+}
+
+/** 上传excel文件*/
+const uploadRef = ref({});
+function submitUpload() {
+ uploadRef.value.submit();
+}
+
+/** 上传地址和请求头*/
+const uploadExcelUrl = ref(import.meta.env.VITE_APP_BASE_API + "/manage/sku/import"); // 上传excel文件的服务器地址
+const headers = ref({ Authorization: "Bearer " + getToken() });
+// 上传成功回调
+function handleUploadSuccess(res, file) {
+  if (res.code === 200) {
+    proxy.$modal.msgSuccess("上传excel成功");
+    excelOpen.value = false;
+    getList();
+  } else {
+    proxy.$modal.msgError(res.msg);
+  }
+  uploadRef.value.clearFiles();
+  proxy.$modal.closeLoading();
+}
+
+// 上传失败
+function handleUploadError() {
+  proxy.$modal.msgError("上传excel失败");
+  uploadRef.value.clearFiles();
+  proxy.$modal.closeLoading();
+}
+
+//上传前的校验
+const props = defineProps({
+  modelValue: [String, Object, Array],
+  // 大小限制(MB)
+  fileSize: {
+    type: Number,
+    default: 1,
+  },
+  // 文件类型, 例如 ["xls", "xlsx"]
+  fileType: {
+    type: Array,
+    default: () => ["xls", "xlsx"],
+  },
+
+});
+// 上传前loading加载
+function handleBeforeUpload(file) {
+  let isExcel = false;
+  if (props.fileType.length) {
+    let fileExtension = "";
+    if (file.name.lastIndexOf(".") > -1) {
+      fileExtension = file.name.slice(file.name.lastIndexOf(".") + 1);
+    }
+    isExcel = props.fileType.some(type => {
+      if (file.type.indexOf(type) > -1) return true;
+      if (fileExtension && fileExtension.indexOf(type) > -1) return true;
+      return false;
+    });
+  } 
+  if (!isExcel) {
+    proxy.$modal.msgError(
+      `文件格式不正确, 请上传${props.fileType.join("/")}excel文件!`
+    );
+    return false;
+  }
+  if (props.fileSize) {
+    const isLt = file.size / 1024 / 1024 < props.fileSize;
+    if (!isLt) {
+      proxy.$modal.msgError(`上传excel大小不能超过 ${props.fileSize} MB!`);
+      return false;
+    }
+  }
+  proxy.$modal.loading("正在excel，请稍候...");
 }
 
 const skuClassList = ref([]);
