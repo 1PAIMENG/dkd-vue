@@ -134,17 +134,17 @@
         <el-form-item label="联系电话" prop="mobile">
           <el-input v-model="form.mobile" placeholder="请输入联系电话" />
         </el-form-item>
-        <el-form-item label="创建时间" prop="mobile" v-if="form.id!=null">" >
+        <el-form-item label="创建时间" prop="mobile" v-if="form.id!=null">
           {{ form.createTime }}
         </el-form-item>
         <el-form-item label="负责区域" prop="regionId">
           <!-- <el-input v-model="form.regionId" placeholder="请输入所属区域Id" /> -->
-           <el-select v-model="form.regionName" placeholder="请选择负责区域" clearable>
+           <el-select v-model="form.regionId" placeholder="请选择负责区域" clearable>
             <el-option
               v-for="item in regionList"
-              :key="item.regionId"
+              :key="item.id"
               :label="item.regionName"
-              :value="item.regionId"
+              :value="item.id"
             />
           </el-select>
         </el-form-item>
